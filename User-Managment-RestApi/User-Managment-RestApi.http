@@ -1,0 +1,6 @@
+@User_Managment_RestApi_HostAddress = http://localhost:5290
+
+GET {{User_Managment_RestApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
