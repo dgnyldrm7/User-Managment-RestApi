@@ -13,7 +13,7 @@ namespace User_Managment_RestApi.Controllers
     {
 
         //Dependency Injection
-        public readonly DatabaseContext? context;
+        public readonly DatabaseContext context;
         public UsersController(DatabaseContext _context)
         {
             context = _context;
@@ -22,6 +22,8 @@ namespace User_Managment_RestApi.Controllers
 
         //GET USERS FUNCTONS
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("GetUsers", Name = "All Users")]
         public ActionResult<List<UserDTO>> GetUsers()
         {
@@ -42,14 +44,10 @@ namespace User_Managment_RestApi.Controllers
             };
                 DTO.Add(dto);
             }
-
             if(DTO == null)
             {
                 return NotFound();
             }
-
-        
-
             return Ok(DTO);
 
         }
@@ -59,6 +57,9 @@ namespace User_Managment_RestApi.Controllers
 
         //GET USER ID FUNCTION
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("GetUsers/{id:int}", Name = "Get User By Id")]
         public ActionResult<User> GetByUserId(int? id)
         {
@@ -66,17 +67,62 @@ namespace User_Managment_RestApi.Controllers
             {
                 return NotFound();
             }
-
             if (id < 1 || id > 4)
             {
-                return BadRequest("This Id is Empty in Database!");
+                return BadRequest( $"This Id = {id} is Empty in Database!");
+            }
+            var foundData = context.Users.FirstOrDefault(x => x.Id == id);
+
+            if(foundData == null)
+            {
+                return NotFound();
             }
 
-            var foundData = context.Users.FirstOrDefault(x => x.Id == id);
             string Prev = "https://localhost:7022/api/GetUsers";
 
             return Ok(new { message = $"{id} id user is founded! ", foundData , Prev } );
         }
+
+
+
+
+
+
+        //DELETE USER ID
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Route("UserDelete/{id:int}" , Name = "Delete User")]
+        public ActionResult Delete(int? id)
+        {
+            if( id == null)
+            {
+                return NotFound("This id is empty");
+            }
+
+            var data = context.Users.FirstOrDefault(x => x.Id == id);
+
+            if( data == null)
+            {
+                return NotFound();
+            }
+
+            context.Users.Remove(data);
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch(Exception error)
+            {
+                NotFound($"Bug is : {error}");
+            }
+
+            //204 - status code
+            return NoContent();
+        }
+
+
 
 
         
