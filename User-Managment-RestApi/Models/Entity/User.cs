@@ -18,7 +18,6 @@ namespace User_Managment_RestApi.Models.Entity
         [Required(ErrorMessage = "Please add your Password!")]
         public string? Password { get; set; }
 
-        [Required(ErrorMessage = "Plase add your confirm password!")]
         [Compare(nameof(Password))]
         public string? ConfirmPassword { get; set; }
 

@@ -23,10 +23,12 @@ namespace User_Managment_RestApi.ConnextContext
         {
             //Defined Here(RelationShips) with fluent api!
             modelBuilder.Entity<User>()
+                .Ignore(x => x._roles)
                 .HasOne(x => x._roles)
                 .WithMany(x => x._users);
 
             modelBuilder.Entity<Role>()
+                .Ignore( p => p._users)
                 .HasKey(x => x.Id);  //Primary key of Role class
 
 

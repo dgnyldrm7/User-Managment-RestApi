@@ -17,7 +17,7 @@ namespace User_Managment_RestApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
-            modelBuilder.Entity("User_Managment_RestApi.Entity.Role", b =>
+            modelBuilder.Entity("User_Managment_RestApi.Models.Entity.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -27,7 +27,6 @@ namespace User_Managment_RestApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RoleName")
@@ -42,27 +41,26 @@ namespace User_Managment_RestApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedTime = new DateTime(2024, 4, 26, 18, 9, 12, 588, DateTimeKind.Local).AddTicks(4086),
+                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5469),
                             Description = "This is admin!",
                             RoleName = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedTime = new DateTime(2024, 4, 26, 18, 9, 12, 588, DateTimeKind.Local).AddTicks(4098),
+                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5483),
                             Description = "This is writer!",
                             RoleName = "Writer"
                         });
                 });
 
-            modelBuilder.Entity("User_Managment_RestApi.Entity.User", b =>
+            modelBuilder.Entity("User_Managment_RestApi.Models.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConfirmPassword")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedTime")
@@ -97,7 +95,7 @@ namespace User_Managment_RestApi.Migrations
                         {
                             Id = 1,
                             ConfirmPassword = "123456",
-                            CreatedTime = new DateTime(2024, 4, 26, 18, 9, 12, 588, DateTimeKind.Local).AddTicks(4309),
+                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5686),
                             Email = "test1@gmail.com",
                             LastName = "Test1",
                             Name = "Test1",
@@ -108,7 +106,7 @@ namespace User_Managment_RestApi.Migrations
                         {
                             Id = 2,
                             ConfirmPassword = "123456*",
-                            CreatedTime = new DateTime(2024, 4, 26, 18, 9, 12, 588, DateTimeKind.Local).AddTicks(4312),
+                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5688),
                             Email = "test2@gmail.com",
                             LastName = "Test2",
                             Name = "Test2",
@@ -119,7 +117,7 @@ namespace User_Managment_RestApi.Migrations
                         {
                             Id = 3,
                             ConfirmPassword = "123",
-                            CreatedTime = new DateTime(2024, 4, 26, 18, 9, 12, 588, DateTimeKind.Local).AddTicks(4315),
+                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5690),
                             Email = "test3@gmail.com",
                             LastName = "Test3",
                             Name = "Test3",
@@ -130,7 +128,7 @@ namespace User_Managment_RestApi.Migrations
                         {
                             Id = 4,
                             ConfirmPassword = "12",
-                            CreatedTime = new DateTime(2024, 4, 26, 18, 9, 12, 588, DateTimeKind.Local).AddTicks(4317),
+                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5692),
                             Email = "test4@gmail.com",
                             LastName = "Test4",
                             Name = "Test4",
@@ -139,20 +137,15 @@ namespace User_Managment_RestApi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("User_Managment_RestApi.Entity.User", b =>
+            modelBuilder.Entity("User_Managment_RestApi.Models.Entity.User", b =>
                 {
-                    b.HasOne("User_Managment_RestApi.Entity.Role", "_roles")
-                        .WithMany("_users")
+                    b.HasOne("User_Managment_RestApi.Models.Entity.Role", "_roles")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("_roles");
-                });
-
-            modelBuilder.Entity("User_Managment_RestApi.Entity.Role", b =>
-                {
-                    b.Navigation("_users");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,7 +31,7 @@ namespace User_Managment_RestApi.Controllers
             var DTO = new List<UserDTO>();
             foreach (var user in users)
             {
-                UserDTO dto = new UserDTO()
+                UserDTO Users = new UserDTO()
                 {
                     Id = user.Id,
                     Name = user.Name,
@@ -42,13 +42,22 @@ namespace User_Managment_RestApi.Controllers
                     RoleId = user.RoleId,
                     Details = $"https://localhost:7022/api/GetUsers/{user.Id}"
             };
-                DTO.Add(dto);
+                DTO.Add(Users);
             }
             if(DTO == null)
             {
                 return NotFound();
             }
-            return Ok(DTO);
+
+            string Prev = "https://localhost:7022/api";
+
+            var response = new
+            {
+                Prev,
+                DTO
+            };
+
+            return Ok( response );
 
         }
 
@@ -67,15 +76,17 @@ namespace User_Managment_RestApi.Controllers
             {
                 return NotFound();
             }
-            if (id < 1 || id > 4)
+            if (id < 1)
             {
-                return BadRequest( $"This Id = {id} is Empty in Database!");
+                return BadRequest( $"This Id = {id} is negative number");
             }
-            var foundData = context.Users.FirstOrDefault(x => x.Id == id);
+
+            var foundData = context.Users
+                .FirstOrDefault(x => x.Id == id);
 
             if(foundData == null)
             {
-                return NotFound();
+                return BadRequest($"This Id = {id} was deleted in Database! or NULL");
             }
 
             string Prev = "https://localhost:7022/api/GetUsers";
@@ -92,6 +103,7 @@ namespace User_Managment_RestApi.Controllers
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Route("UserDelete/{id:int}" , Name = "Delete User")]
         public ActionResult Delete(int? id)
         {
@@ -123,6 +135,24 @@ namespace User_Managment_RestApi.Controllers
         }
 
 
+
+
+        //POST NEW USER
+        [HttpPost]
+        [Route("PostUser", Name = "Post New User")]
+        public ActionResult PostUser(User data)
+        {
+
+            if( data == null)
+            {
+                return NotFound("Your datas are empty!");
+            }
+
+            context.Users.Add(data);
+            context.SaveChanges();
+
+            return Created($"GetUsers/{data.Id}", data);
+        }
 
 
         

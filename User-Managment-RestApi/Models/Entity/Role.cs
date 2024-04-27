@@ -10,7 +10,6 @@ namespace User_Managment_RestApi.Models.Entity
         [Required(ErrorMessage = "Please add RoleName!")]
         public string? RoleName { get; set; }
 
-        [Required(ErrorMessage = "Please add Description!")]
         public string? Description { get; set; }
 
 
@@ -18,6 +17,7 @@ namespace User_Managment_RestApi.Models.Entity
 
 
         //Add properties!
+        [NotMapped]
         public ICollection<User>? _users { get; set; }
     }
 }
