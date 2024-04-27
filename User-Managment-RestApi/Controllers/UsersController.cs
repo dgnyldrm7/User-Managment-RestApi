@@ -99,6 +99,9 @@ namespace User_Managment_RestApi.Controllers
 
 
 
+
+
+
         //DELETE USER ID
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -137,9 +140,14 @@ namespace User_Managment_RestApi.Controllers
 
 
 
+
+
+
         //POST NEW USER
         [HttpPost]
         [Route("PostUser", Name = "Post New User")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult PostUser(User data)
         {
 
@@ -154,6 +162,44 @@ namespace User_Managment_RestApi.Controllers
             return Created($"GetUsers/{data.Id}", data);
         }
 
+
+
+
+
+
+
+
+        //PUT METHOD OLD USER - UPDATE OPTIONS
+        [HttpPut]
+        [Route("UpdateUser/{id:int}", Name = "Update User")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult PutUser(int id , User data)
+        {
+            if(id != data.Id)
+            {
+                return BadRequest();
+            }
+
+            var updateUser = context.Users.FirstOrDefault(m => m.Id == id);
+
+            if( updateUser == null)
+            {
+                return NotFound();
+            }
+
+            updateUser.Name = data.Name;
+            updateUser.LastName = data.LastName;
+            updateUser.Email = data.Email;
+            updateUser.Password = data.Password;
+            updateUser.ConfirmPassword = data.ConfirmPassword;
+
+            context.SaveChanges();
+
+            //204 - status code - update
+            return NoContent();
+        }
 
         
 
