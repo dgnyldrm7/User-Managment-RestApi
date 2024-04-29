@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using User_Managment_RestApi.ConnextContext;
 using User_Managment_RestApi.Models.Entity;
 using User_Managment_RestApi.Models.Entity.DTO;
+using User_Managment_RestApi.Repository;
 
 namespace User_Managment_RestApi.Controllers
 {
@@ -12,11 +13,11 @@ namespace User_Managment_RestApi.Controllers
     public class UsersController : ControllerBase
     {
 
-        //Dependency Injection
-        public readonly DatabaseContext context;
-        public UsersController(DatabaseContext _context)
+        //Dependency Injection with Repository Design Pattern!
+        private readonly IUserRepository userRepository;
+        public UsersController(IUserRepository _userRepository)
         {
-            context = _context;
+            userRepository = _userRepository;
         }
 
 
@@ -27,27 +28,28 @@ namespace User_Managment_RestApi.Controllers
         [Route("GetUsers", Name = "All Users")]
         public ActionResult<List<UserDTO>> GetUsers()
         {
-            var users = context.Users.ToList();
+            //var users = context.Users.ToList();
+
             var DTO = new List<UserDTO>();
-            foreach (var user in users)
-            {
-                UserDTO Users = new UserDTO()
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Password = user.Password,
-                    CreatedTime = user.CreatedTime,
-                    RoleId = user.RoleId,
-                    Details = $"https://localhost:7022/api/GetUsers/{user.Id}"
-            };
-                DTO.Add(Users);
-            }
-            if(DTO == null)
-            {
-                return NotFound();
-            }
+            //foreach (var user in users)
+            //{
+            //    UserDTO Users = new UserDTO()
+            //    {
+            //        Id = user.Id,
+            //        Name = user.Name,
+            //        LastName = user.LastName,
+            //        Email = user.Email,
+            //        Password = user.Password,
+            //        CreatedTime = user.CreatedTime,
+            //        RoleId = user.RoleId,
+            //        Details = $"https://localhost:7022/api/GetUsers/{user.Id}"
+            //};
+            //    DTO.Add(Users);
+            //}
+            //if(DTO == null)
+            //{
+            //    return NotFound();
+            //}
 
             string Prev = "https://localhost:7022/api";
 
@@ -80,17 +82,12 @@ namespace User_Managment_RestApi.Controllers
             {
                 return BadRequest( $"This Id = {id} is negative number");
             }
-
-            var foundData = context.Users
-                .FirstOrDefault(x => x.Id == id);
-
-            if(foundData == null)
+            var foundData = userRepository.GetByUserId(id);
+            if (foundData == null)
             {
                 return BadRequest($"This Id = {id} was deleted in Database! or NULL");
             }
-
             string Prev = "https://localhost:7022/api/GetUsers";
-
             return Ok(new { message = $"{id} id user is founded! ", foundData , Prev } );
         }
 
@@ -105,7 +102,6 @@ namespace User_Managment_RestApi.Controllers
         //DELETE USER ID
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Route("UserDelete/{id:int}" , Name = "Delete User")]
         public ActionResult Delete(int? id)
@@ -114,25 +110,19 @@ namespace User_Managment_RestApi.Controllers
             {
                 return NotFound("This id is empty");
             }
-
-            var data = context.Users.FirstOrDefault(x => x.Id == id);
-
-            if( data == null)
+            var data = userRepository.GetByUserId(id);
+            if ( data == null)
             {
                 return NotFound();
             }
-
-            context.Users.Remove(data);
-
             try
             {
-                context.SaveChanges();
+                userRepository.Delete(data);
             }
             catch(Exception error)
             {
                 NotFound($"Bug is : {error}");
             }
-
             //204 - status code
             return NoContent();
         }
@@ -150,16 +140,12 @@ namespace User_Managment_RestApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult PostUser(User data)
         {
-
             if( data == null)
             {
                 return NotFound("Your datas are empty!");
             }
-
-            context.Users.Add(data);
-            context.SaveChanges();
-
-            return Created($"GetUsers/{data.Id}", data);
+            int number = userRepository.Post(data);
+            return Created($"GetUsers/{number}", data);
         }
 
 
@@ -181,21 +167,20 @@ namespace User_Managment_RestApi.Controllers
             {
                 return BadRequest();
             }
+            ////var updateUser = context.Users.FirstOrDefault(m => m.Id == id);
 
-            var updateUser = context.Users.FirstOrDefault(m => m.Id == id);
+            //if( updateUser == null)
+            //{
+            //    return NotFound();
+            //}
 
-            if( updateUser == null)
-            {
-                return NotFound();
-            }
+            //updateUser.Name = data.Name;
+            //updateUser.LastName = data.LastName;
+            //updateUser.Email = data.Email;
+            //updateUser.Password = data.Password;
+            //updateUser.ConfirmPassword = data.ConfirmPassword;
 
-            updateUser.Name = data.Name;
-            updateUser.LastName = data.LastName;
-            updateUser.Email = data.Email;
-            updateUser.Password = data.Password;
-            updateUser.ConfirmPassword = data.ConfirmPassword;
-
-            context.SaveChanges();
+            //context.SaveChanges();
 
             //204 - status code - update
             return NoContent();

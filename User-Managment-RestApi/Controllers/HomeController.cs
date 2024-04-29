@@ -16,9 +16,6 @@ namespace User_Managment_RestApi.Controllers
 
         };
 
-       
-
-
         [HttpGet]
         public Dictionary<string , string> GetList()
         {
