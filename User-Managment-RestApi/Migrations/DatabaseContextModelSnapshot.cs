@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using User_Managment_RestApi.ConnextContext;
+using User_Managment_RestApi.Models.ConnectContext;
 
 #nullable disable
 

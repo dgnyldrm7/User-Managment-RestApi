@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
-using User_Managment_RestApi.ConnextContext;
-using User_Managment_RestApi.Repository;
+using User_Managment_RestApi.Models.ConnectContext;
+using User_Managment_RestApi.Models.DTO;
+using User_Managment_RestApi.Models.MapperProfile;
+using User_Managment_RestApi.Models.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +21,13 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 });
 
 
-//Service configuration!
+//Service configuration! - Interface dependency!
 builder.Services.AddTransient<IUserRepository , UserRepository>();
+
+
+//add automapper
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(UserMapper).Assembly);
 
 
 

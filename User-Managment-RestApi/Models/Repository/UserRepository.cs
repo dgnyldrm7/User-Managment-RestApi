@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using User_Managment_RestApi.Models.Entity;
-using User_Managment_RestApi.Models.Entity.DTO;
-using User_Managment_RestApi.ConnextContext;
+using User_Managment_RestApi.Models.DTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using User_Managment_RestApi.Models.ConnectContext;
 
-namespace User_Managment_RestApi.Repository
+namespace User_Managment_RestApi.Models.Repository
 {
     public class UserRepository : IUserRepository
     {
@@ -17,8 +17,8 @@ namespace User_Managment_RestApi.Repository
 
 
 
-
-        public ActionResult<List<User>> GetUsers()
+        //Get All Users!
+        public List<User> GetUsers()
         {
             return _context.Users.ToList();
         }
@@ -28,7 +28,7 @@ namespace User_Managment_RestApi.Repository
         public User GetByUserId(int? id)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == id);
-            
+
             return user;
         }
 
@@ -56,17 +56,21 @@ namespace User_Managment_RestApi.Repository
 
 
 
-        public ActionResult Update(int id, User data)
+        public int Update(int id, User data)
         {
-            throw new NotImplementedException();
+            var updateUser = GetByUserId(id); //found it 
+
+            updateUser.Name = data.Name;
+            updateUser.LastName = data.LastName;
+            updateUser.Email = data.Email;
+            updateUser.Password = data.Password;
+            updateUser.ConfirmPassword = data.ConfirmPassword;
+
+            _context.SaveChanges();
+
+            return data.Id;
         }
 
-        Action<List<User>> IUserRepository.GetUsers()
-        {
-            throw new NotImplementedException();
-        }
 
-
-        
     }
 }

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using User_Managment_RestApi.ConnextContext;
+using User_Managment_RestApi.Models.ConnectContext;
+using User_Managment_RestApi.Models.DTO;
 using User_Managment_RestApi.Models.Entity;
-using User_Managment_RestApi.Models.Entity.DTO;
-using User_Managment_RestApi.Repository;
+using User_Managment_RestApi.Models.Repository;
 
 namespace User_Managment_RestApi.Controllers
 {
@@ -15,9 +16,14 @@ namespace User_Managment_RestApi.Controllers
 
         //Dependency Injection with Repository Design Pattern!
         private readonly IUserRepository userRepository;
-        public UsersController(IUserRepository _userRepository)
+
+        //Dependency injection here -> AutoMapper
+        private readonly IMapper mapper;
+
+        public UsersController(IUserRepository _userRepository , IMapper _mapper)
         {
             userRepository = _userRepository;
+            mapper = _mapper;
         }
 
 
@@ -28,37 +34,21 @@ namespace User_Managment_RestApi.Controllers
         [Route("GetUsers", Name = "All Users")]
         public ActionResult<List<UserDTO>> GetUsers()
         {
-            //var users = context.Users.ToList();
+            //Users is coming list type!
+            var users = userRepository.GetUsers();
+            //changed from User to UserDTO
+            var DTO = mapper.Map<List<UserDTO>>(users);
 
-            var DTO = new List<UserDTO>();
-            //foreach (var user in users)
-            //{
-            //    UserDTO Users = new UserDTO()
-            //    {
-            //        Id = user.Id,
-            //        Name = user.Name,
-            //        LastName = user.LastName,
-            //        Email = user.Email,
-            //        Password = user.Password,
-            //        CreatedTime = user.CreatedTime,
-            //        RoleId = user.RoleId,
-            //        Details = $"https://localhost:7022/api/GetUsers/{user.Id}"
-            //};
-            //    DTO.Add(Users);
-            //}
-            //if(DTO == null)
-            //{
-            //    return NotFound();
-            //}
-
+            if (DTO == null)
+            {
+                return NotFound();
+            }
             string Prev = "https://localhost:7022/api";
-
             var response = new
             {
                 Prev,
                 DTO
             };
-
             return Ok( response );
 
         }
@@ -167,20 +157,19 @@ namespace User_Managment_RestApi.Controllers
             {
                 return BadRequest();
             }
-            ////var updateUser = context.Users.FirstOrDefault(m => m.Id == id);
+            var updateUser = userRepository.GetByUserId(id);
 
-            //if( updateUser == null)
-            //{
-            //    return NotFound();
-            //}
+            if (updateUser == null)
+            {
+                return NotFound();
+            }
 
-            //updateUser.Name = data.Name;
-            //updateUser.LastName = data.LastName;
-            //updateUser.Email = data.Email;
-            //updateUser.Password = data.Password;
-            //updateUser.ConfirmPassword = data.ConfirmPassword;
+            var updateId = userRepository.Update(id,data);
 
-            //context.SaveChanges();
+            if(updateId != id)
+            {
+                return BadRequest();
+            }
 
             //204 - status code - update
             return NoContent();

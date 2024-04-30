@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using User_Managment_RestApi.Models.Entity;
 
-namespace User_Managment_RestApi.ConnextContext
+namespace User_Managment_RestApi.Models.ConnectContext
 {
     public class DatabaseContext : DbContext
     {
@@ -28,7 +28,7 @@ namespace User_Managment_RestApi.ConnextContext
                 .WithMany(x => x._users);
 
             modelBuilder.Entity<Role>()
-                .Ignore( p => p._users)
+                .Ignore(p => p._users)
                 .HasKey(x => x.Id);  //Primary key of Role class
 
 
@@ -40,7 +40,7 @@ namespace User_Managment_RestApi.ConnextContext
             //SEED DATAS!
             modelBuilder.Entity<Role>().HasData(
                     new Role
-                    {   
+                    {
                         Id = 1,
                         RoleName = "Admin",
                         Description = "This is admin!",
@@ -57,7 +57,7 @@ namespace User_Managment_RestApi.ConnextContext
 
             modelBuilder.Entity<User>().HasData(
                    new User
-                   { 
+                   {
                        Id = 1,
                        Name = "Test1",
                        LastName = "Test1",
