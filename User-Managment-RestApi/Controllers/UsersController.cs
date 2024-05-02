@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using User_Managment_RestApi.Models.ConnectContext;
-using User_Managment_RestApi.Models.DTO;
 using User_Managment_RestApi.Models.Entity;
-using User_Managment_RestApi.Models.Repository;
+using User_Managment_RestApi.Models.Entity.DTO.UserDTO;
+using User_Managment_RestApi.Models.Repository.UserRepo;
 
 namespace User_Managment_RestApi.Controllers
 {
@@ -37,9 +37,9 @@ namespace User_Managment_RestApi.Controllers
             //Users is coming list type!
             var users = userRepository.GetUsers();
             //changed from User to UserDTO
-            var DTO = mapper.Map<List<UserDTO>>(users);
+            var UsersDDTO = mapper.Map<List<UserDTO>>(users);
 
-            if (DTO == null)
+            if (UsersDDTO == null)
             {
                 return NotFound();
             }
@@ -47,7 +47,7 @@ namespace User_Managment_RestApi.Controllers
             var response = new
             {
                 Prev,
-                DTO
+                UsersDDTO
             };
             return Ok( response );
 
@@ -72,7 +72,10 @@ namespace User_Managment_RestApi.Controllers
             {
                 return BadRequest( $"This Id = {id} is negative number");
             }
-            var foundData = userRepository.GetByUserId(id);
+            var _foundData = userRepository.GetByUserId(id);
+
+            var foundData = mapper.Map<UserDetailsDTO>(_foundData);
+
             if (foundData == null)
             {
                 return BadRequest($"This Id = {id} was deleted in Database! or NULL");
@@ -101,6 +104,7 @@ namespace User_Managment_RestApi.Controllers
                 return NotFound("This id is empty");
             }
             var data = userRepository.GetByUserId(id);
+            
             if ( data == null)
             {
                 return NotFound();

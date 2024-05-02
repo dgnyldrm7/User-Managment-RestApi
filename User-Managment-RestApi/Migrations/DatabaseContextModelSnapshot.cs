@@ -41,16 +41,16 @@ namespace User_Managment_RestApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5469),
-                            Description = "This is admin!",
+                            CreatedTime = new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(728),
+                            Description = "Admin role",
                             RoleName = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5483),
-                            Description = "This is writer!",
-                            RoleName = "Writer"
+                            CreatedTime = new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(740),
+                            Description = "Regular user role",
+                            RoleName = "User"
                         });
                 });
 
@@ -94,58 +94,41 @@ namespace User_Managment_RestApi.Migrations
                         new
                         {
                             Id = 1,
-                            ConfirmPassword = "123456",
-                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5686),
-                            Email = "test1@gmail.com",
-                            LastName = "Test1",
-                            Name = "Test1",
-                            Password = "123456",
+                            ConfirmPassword = "password123",
+                            CreatedTime = new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(834),
+                            Email = "john@example.com",
+                            LastName = "Doe",
+                            Name = "John",
+                            Password = "password123",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            ConfirmPassword = "123456*",
-                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5688),
-                            Email = "test2@gmail.com",
-                            LastName = "Test2",
-                            Name = "Test2",
-                            Password = "123456*",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConfirmPassword = "123",
-                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5690),
-                            Email = "test3@gmail.com",
-                            LastName = "Test3",
-                            Name = "Test3",
-                            Password = "123",
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ConfirmPassword = "12",
-                            CreatedTime = new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5692),
-                            Email = "test4@gmail.com",
-                            LastName = "Test4",
-                            Name = "Test4",
-                            Password = "12",
+                            ConfirmPassword = "password456",
+                            CreatedTime = new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(837),
+                            Email = "jane@example.com",
+                            LastName = "Doe",
+                            Name = "Jane",
+                            Password = "password456",
                             RoleId = 2
                         });
                 });
 
             modelBuilder.Entity("User_Managment_RestApi.Models.Entity.User", b =>
                 {
-                    b.HasOne("User_Managment_RestApi.Models.Entity.Role", "_roles")
-                        .WithMany()
+                    b.HasOne("User_Managment_RestApi.Models.Entity.Role", "Role")
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("_roles");
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("User_Managment_RestApi.Models.Entity.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

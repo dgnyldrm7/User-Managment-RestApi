@@ -58,8 +58,8 @@ namespace User_Managment_RestApi.Migrations
                 columns: new[] { "Id", "CreatedTime", "Description", "RoleName" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5469), "This is admin!", "Admin" },
-                    { 2, new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5483), "This is writer!", "Writer" }
+                    { 1, new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(728), "Admin role", "Admin" },
+                    { 2, new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(740), "Regular user role", "User" }
                 });
 
             migrationBuilder.InsertData(
@@ -67,10 +67,8 @@ namespace User_Managment_RestApi.Migrations
                 columns: new[] { "Id", "ConfirmPassword", "CreatedTime", "Email", "LastName", "Name", "Password", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, "123456", new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5686), "test1@gmail.com", "Test1", "Test1", "123456", 1 },
-                    { 2, "123456*", new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5688), "test2@gmail.com", "Test2", "Test2", "123456*", 1 },
-                    { 3, "123", new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5690), "test3@gmail.com", "Test3", "Test3", "123", 2 },
-                    { 4, "12", new DateTime(2024, 4, 27, 13, 39, 22, 629, DateTimeKind.Local).AddTicks(5692), "test4@gmail.com", "Test4", "Test4", "12", 2 }
+                    { 1, "password123", new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(834), "john@example.com", "Doe", "John", "password123", 1 },
+                    { 2, "password456", new DateTime(2024, 5, 1, 16, 32, 15, 9, DateTimeKind.Local).AddTicks(837), "jane@example.com", "Doe", "Jane", "password456", 2 }
                 });
 
             migrationBuilder.CreateIndex(

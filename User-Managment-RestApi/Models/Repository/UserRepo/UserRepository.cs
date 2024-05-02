@@ -3,8 +3,9 @@ using User_Managment_RestApi.Models.Entity;
 using User_Managment_RestApi.Models.DTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using User_Managment_RestApi.Models.ConnectContext;
+using Microsoft.EntityFrameworkCore;
 
-namespace User_Managment_RestApi.Models.Repository
+namespace User_Managment_RestApi.Models.Repository.UserRepo
 {
     public class UserRepository : IUserRepository
     {
@@ -27,7 +28,7 @@ namespace User_Managment_RestApi.Models.Repository
         //GetUserById
         public User GetByUserId(int? id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            var user = _context.Users.Include(u => u.Role).FirstOrDefault(x => x.Id == id);
 
             return user;
         }

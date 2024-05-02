@@ -1,25 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using User_Managment_RestApi.Models.Entity;
 
-namespace User_Managment_RestApi.Models.Entity
+namespace User_Managment_RestApi.Models.DTO.RoleDTO
 {
-    public class Role
+    public class RoleDetails
     {
-        [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Please add RoleName!")]
         public string? RoleName { get; set; }
-
         public string? Description { get; set; }
         public DateTime CreatedTime { get; set; }
-
-        // Kullanıcılar için koleksiyon
         public ICollection<User>? Users { get; set; }
     }
-
-
-   
 }
-
-

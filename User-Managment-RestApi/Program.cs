@@ -1,11 +1,16 @@
 ﻿using System.Reflection;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using User_Managment_RestApi.Models.ConnectContext;
 using User_Managment_RestApi.Models.DTO;
 using User_Managment_RestApi.Models.MapperProfile;
-using User_Managment_RestApi.Models.Repository;
+using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using User_Managment_RestApi.Models.Repository.UserRepo;
+using User_Managment_RestApi.Models.Repository.RoleRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +28,20 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 //Service configuration! - Interface dependency!
 builder.Services.AddTransient<IUserRepository , UserRepository>();
+builder.Services.AddTransient<IRoleRepository, RoleRepository>();
 
 
 //add automapper
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(typeof(UserMapper).Assembly);
+builder.Services.AddAutoMapper(typeof(RoleMapper).Assembly);
+//builder.Services.AddAutoMapper(typeof(Startup));
 
 
+
+
+//builder.Services.AddControllers().AddJsonOptions(x =>
+//                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 
 builder.Services.AddControllers();
@@ -45,7 +57,7 @@ builder.Services.AddSwaggerGen(swagger =>
     {
         Version = "Version-1",
         Title = "User-Role Managment System",
-        Description = "User-Role Relation Managment",
+        Description = "User-Role Relation Managment - dgnyldrm7",
     });
 });
 

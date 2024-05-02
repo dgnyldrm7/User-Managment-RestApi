@@ -23,84 +23,65 @@ namespace User_Managment_RestApi.Models.ConnectContext
         {
             //Defined Here(RelationShips) with fluent api!
             modelBuilder.Entity<User>()
-                .Ignore(x => x._roles)
-                .HasOne(x => x._roles)
-                .WithMany(x => x._users);
+                .HasOne(x => x.Role)
+                .WithMany(x => x.Users);
 
             modelBuilder.Entity<Role>()
-                .Ignore(p => p._users)
                 .HasKey(x => x.Id);  //Primary key of Role class
 
 
 
 
 
-
-
-            //SEED DATAS!
+            // Seed data ekleme
             modelBuilder.Entity<Role>().HasData(
-                    new Role
-                    {
-                        Id = 1,
-                        RoleName = "Admin",
-                        Description = "This is admin!",
-                        CreatedTime = DateTime.Now,
-                    },
-                    new Role
-                    {
-                        Id = 2,
-                        RoleName = "Writer",
-                        Description = "This is writer!",
-                        CreatedTime = DateTime.Now,
-                    }
-                );
+                new Role
+                {
+                    Id = 1,
+                    RoleName = "Admin",
+                    Description = "Admin role",
+                    CreatedTime = DateTime.Now
+                },
+                new Role
+                {
+                    Id = 2,
+                    RoleName = "User",
+                    Description = "Regular user role",
+                    CreatedTime = DateTime.Now
+                }
+            );
+
 
             modelBuilder.Entity<User>().HasData(
-                   new User
-                   {
-                       Id = 1,
-                       Name = "Test1",
-                       LastName = "Test1",
-                       Email = "test1@gmail.com",
-                       Password = "123456",
-                       ConfirmPassword = "123456",
-                       CreatedTime = DateTime.Now,
-                       RoleId = 1
-                   },
-                   new User
-                   {
-                       Id = 2,
-                       Name = "Test2",
-                       LastName = "Test2",
-                       Email = "test2@gmail.com",
-                       Password = "123456*",
-                       ConfirmPassword = "123456*",
-                       CreatedTime = DateTime.Now,
-                       RoleId = 1
-                   },
-                   new User
-                   {
-                       Id = 3,
-                       Name = "Test3",
-                       LastName = "Test3",
-                       Email = "test3@gmail.com",
-                       Password = "123",
-                       ConfirmPassword = "123",
-                       CreatedTime = DateTime.Now,
-                       RoleId = 2
-                   },
-                   new User
-                   {
-                       Id = 4,
-                       Name = "Test4",
-                       LastName = "Test4",
-                       Email = "test4@gmail.com",
-                       Password = "12",
-                       ConfirmPassword = "12",
-                       CreatedTime = DateTime.Now,
-                       RoleId = 2
-                   }
-                );
+                new User
+                {
+                    Id = 1,
+                    Name = "John",
+                    LastName = "Doe",
+                    Email = "john@example.com",
+                    Password = "password123",
+                    ConfirmPassword = "password123",
+                    CreatedTime = DateTime.Now,
+                    RoleId = 1 // Admin rolü
+                },
+                new User
+                {
+                    Id = 2,
+                    Name = "Jane",
+                    LastName = "Doe",
+                    Email = "jane@example.com",
+                    Password = "password456",
+                    ConfirmPassword = "password456",
+                    CreatedTime = DateTime.Now,
+                    RoleId = 2 // User rolü
+                }
+        );
+
+
+
+
+
+
         }
 
     }

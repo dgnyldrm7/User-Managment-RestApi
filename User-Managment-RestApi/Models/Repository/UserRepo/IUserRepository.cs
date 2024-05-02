@@ -2,7 +2,7 @@
 using User_Managment_RestApi.Models.Entity;
 using User_Managment_RestApi.Models.DTO;
 
-namespace User_Managment_RestApi.Models.Repository
+namespace User_Managment_RestApi.Models.Repository.UserRepo
 {
     public interface IUserRepository
     {

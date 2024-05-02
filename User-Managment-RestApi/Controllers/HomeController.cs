@@ -12,7 +12,7 @@ namespace User_Managment_RestApi.Controllers
         public Dictionary<string, string> myDictionary = new Dictionary<string, string>()
         {
             {"Users" , "https://localhost:7022/api/GetUsers/" },
-            {"Roles" , "https://localhost:7022/api/Roles/"}
+            {"Roles" , "https://localhost:7022/api/GetRoles/"}
 
         };
 

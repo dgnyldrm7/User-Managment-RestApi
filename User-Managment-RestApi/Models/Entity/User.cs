@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace User_Managment_RestApi.Models.Entity
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please add user name!")]
@@ -23,14 +25,9 @@ namespace User_Managment_RestApi.Models.Entity
 
         public DateTime CreatedTime { get; set; }
 
-
-
-
-        //Add properties!
-        public Role? _roles { get; set; }
-
-        //foreing key!
+        // Role ile ilişki
         public int RoleId { get; set; }
-
+        public Role? Role { get; set; }
     }
+
 }
